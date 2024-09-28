@@ -1,7 +1,7 @@
 {
   "name": "use-fetch-error",
   "version": "1.0.2",
-  "description": "A library for error handling with [error, result] tuples using a useFetch() function.",
+  "description": "A library for error handling with [error, result] tuples using a useFetchError() function.",
   "keywords": [
     "javascript",
     "fetch",
