@@ -1,0 +1,31 @@
+name: Publish to npm
+
+# Runs when a release is published on GitHub (tag like v2.0.0).
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write # needed for npm trusted publishing (no token required)
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - name: Use latest npm (trusted publishing needs npm 11.5.1+)
+        run: npm install -g npm@latest
+      - name: Check that the release tag matches package.json
+        run: |
+          VERSION="v$(node -p "require('./package.json').version")"
+          if [ "$VERSION" != "${{ github.event.release.tag_name }}" ]; then
+            echo "Release tag ${{ github.event.release.tag_name }} does not match package.json version $VERSION"
+            exit 1
+          fi
+      - run: npm ci
+      - run: npm publish --access public
