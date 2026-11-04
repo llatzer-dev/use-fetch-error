@@ -111,6 +111,17 @@ export function runSuite(name, lib) {
     assert.ok(error instanceof SyntaxError);
   });
 
+  test(`${name}: to() and tryCatch() wrap non-Error values`, async () => {
+    const [asyncError] = await to(Promise.reject("oops"));
+    assert.ok(asyncError instanceof Error);
+    assert.equal(asyncError.message, "oops");
+    const [syncError] = tryCatch(() => {
+      throw 42;
+    });
+    assert.ok(syncError instanceof Error);
+    assert.equal(syncError.message, "42");
+  });
+
   test(`${name}: exports only the public API`, () => {
     assert.deepEqual(
       Object.keys(lib).filter((key) => key !== "default").sort(),

@@ -22,6 +22,21 @@ async function check() {
   const [, n] = await to(Promise.resolve(1));
   const maybe: number | undefined = n;
 
+  const [toError, value] = await to(Promise.resolve(1));
+  if (!toError) {
+    const narrowed: number = value;
+  }
+
+  const [syncError, url] = tryCatch(() => new URL("https://example.com"));
+  if (!syncError) {
+    const href: string = url.href;
+  }
+
+  const [parseError] = tryCatch<[string], unknown, SyntaxError>(JSON.parse, "{}");
+  if (parseError) {
+    const syntax: SyntaxError = parseError;
+  }
+
   const parsed: Result<unknown> = tryCatch(JSON.parse, "{}");
 
   // @ts-expect-error parseAs only accepts known values
