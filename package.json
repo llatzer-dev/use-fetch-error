@@ -1,14 +1,49 @@
 {
   "name": "use-fetch-error",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "A library for error handling with [error, result] tuples using a useFetchError() function.",
   "keywords": [
     "javascript",
+    "typescript",
     "fetch",
     "handle error"
   ],
   "author": "llatzer",
   "license": "MIT",
-  "main": "src/index.js",
-  "browser": "src/index.js"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/llatzer-dev/use-fetch-error.git"
+  },
+  "sideEffects": false,
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "build": "npm run clean && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && node scripts/write-dist-packages.mjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "npm run typecheck && npm run build && node --test \"test/*.test.mjs\" \"test/*.test.cjs\"",
+    "prepublishOnly": "npm test"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2"
+  }
 }
