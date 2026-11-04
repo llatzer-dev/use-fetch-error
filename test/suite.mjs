@@ -111,6 +111,13 @@ export function runSuite(name, lib) {
     assert.ok(error instanceof SyntaxError);
   });
 
+  test(`${name}: exports only the public API`, () => {
+    assert.deepEqual(
+      Object.keys(lib).filter((key) => key !== "default").sort(),
+      ["HttpError", "TimeoutError", "to", "tryCatch", "useFetchError"]
+    );
+  });
+
   test(`${name}: does not modify built-in prototypes`, () => {
     const own = [Function.prototype, Promise.prototype].flatMap((proto) =>
       Object.getOwnPropertySymbols(proto).map(String)
