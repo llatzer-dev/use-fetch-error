@@ -41,7 +41,7 @@
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
     "build": "npm run clean && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && node scripts/write-dist-packages.mjs",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "npm run typecheck && npm run build && node --test \"test/*.test.mjs\" \"test/*.test.cjs\"",
+    "test": "npm run typecheck && npm run build && node --test test/esm.test.mjs test/cjs.test.cjs",
     "prepublishOnly": "npm test"
   },
   "devDependencies": {
